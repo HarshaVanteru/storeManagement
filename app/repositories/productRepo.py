@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.productModel import Products
-from app.schemas.productSchema import ProductRequest
-from decimal import Decimal
+from app.schemas.productSchema import ProductRequest, ProductUpdate
+
 
 def add_product(product: ProductRequest, db: Session):
     new_product = Products(
@@ -24,35 +24,18 @@ def get_product_by_id(product_id: int, db: Session):
     return db.query(Products).filter(Products.id == product_id).first()
 
 
-def update_price(product_id: int, price: Decimal, db: Session):
+# ✅ Single Clean Update Function
+def update_product(product_id: int, product_data: ProductUpdate, db: Session):
     product = get_product_by_id(product_id, db)
     if not product:
         return None
 
-    product.price = price
-    db.commit()
-    db.refresh(product)
-    return product
+    if product_data.price is not None:
+        product.price = product_data.price
 
+    if product_data.stock is not None:
+        product.stock = product_data.stock
 
-def update_stock(product_id: int, stock: int, db: Session):
-    product = get_product_by_id(product_id, db)
-    if not product:
-        return None
-
-    product.stock = stock
-    db.commit()
-    db.refresh(product)
-    return product
-
-
-def update_price_stock(product_id: int, price: float, stock: int, db: Session):
-    product = get_product_by_id(product_id, db)
-    if not product:
-        return None
-
-    product.price = price
-    product.stock = stock
     db.commit()
     db.refresh(product)
     return product
