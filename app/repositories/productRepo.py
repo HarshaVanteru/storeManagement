@@ -24,7 +24,7 @@ def get_product_by_id(product_id: int, db: Session):
     return db.query(Products).filter(Products.id == product_id).first()
 
 
-# ✅ Single Clean Update Function
+
 def update_product(product_id: int, product_data: ProductUpdate, db: Session):
     product = get_product_by_id(product_id, db)
     if not product:
