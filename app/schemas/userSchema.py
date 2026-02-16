@@ -10,6 +10,13 @@ class UserSignupForm(BaseModel):
     email:EmailStr
     password:str = Field(min_length=5,max_length=128)
 
-class UserSigninForm(BaseModel):
+
+
+class UserData(BaseModel):
+    username: str
+    first_name: str
+    last_name: Optional[str]
     email: EmailStr
-    password: str = Field(min_length=5, max_length=128)
+
+    class Config:
+        from_attributes = True

@@ -28,6 +28,6 @@ class ProductResponse(BaseModel):
 
 
 class ProductUpdate(BaseModel):
-    stock: int | None = Field(default=None, ge=0)
+    stock: int | None = Field(default=None, gt=0,max_digits=5)
     price: Decimal | None = Field(default=None, gt=0, max_digits=10, decimal_places=2)
 
